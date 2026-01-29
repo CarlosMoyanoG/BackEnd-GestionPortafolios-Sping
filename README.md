@@ -163,8 +163,9 @@ Este proyecto tiene como objetivo:
 ---
 
 ## ✍️ Autor
-
+**Carlos Moyano**
 Proyecto desarrollado con fines académicos
 
 Carrera: **Ingeniería en Ciencias de la Computación**  
-Mater
+Materia: ¨**Programación y Plataformas Web**
+
