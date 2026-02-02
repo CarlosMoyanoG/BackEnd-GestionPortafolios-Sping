@@ -1,4 +1,4 @@
-package ec.edu.ups.ppw.GestorProyectos.services; // o .config (pero SOLO en 1 lugar)
+package ec.edu.ups.ppw.GestorProyectos.services;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +24,11 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+
                 .requestMatchers(
-                    "/",                      
+                    "/",
+                    "/error",
+                    "/actuator/**",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/swagger-ui.html"

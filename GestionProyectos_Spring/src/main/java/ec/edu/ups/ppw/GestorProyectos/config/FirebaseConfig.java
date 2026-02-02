@@ -21,7 +21,7 @@ public class FirebaseConfig {
     @PostConstruct
     public void initFirebase() {
         try {
-            // Evitar inicializar dos veces
+
             if (!FirebaseApp.getApps().isEmpty()) {
                 log.info("Firebase ya estaba inicializado.");
                 return;
@@ -29,7 +29,8 @@ public class FirebaseConfig {
 
             String json = System.getenv("FIREBASE_CREDENTIALS_JSON");
             if (json == null || json.isBlank()) {
-                throw new IllegalStateException("FIREBASE_CREDENTIALS_JSON no está definido");
+                log.warn("FIREBASE_CREDENTIALS_JSON no está definido. Firebase NO se inicializa.");
+                return; // no tumbar el server
             }
 
             GoogleCredentials credentials = GoogleCredentials.fromStream(
@@ -44,9 +45,7 @@ public class FirebaseConfig {
             log.info("Firebase inicializado correctamente (env var).");
 
         } catch (Exception e) {
-            // Si quieres que NO se caiga el server, cambia a log.warn(...) y return;
             log.error("Firebase init error: {}", e.getMessage(), e);
-            // throw new RuntimeException(e); // <-- NO lo uses si quieres que igual levante
         }
     }
 }
