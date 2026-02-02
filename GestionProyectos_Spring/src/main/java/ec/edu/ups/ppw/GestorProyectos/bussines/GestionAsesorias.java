@@ -10,6 +10,7 @@ import ec.edu.ups.ppw.GestorProyectos.DAO.AsesoriaRepository;
 import ec.edu.ups.ppw.GestorProyectos.modelo.Asesoria;
 import ec.edu.ups.ppw.GestorProyectos.services.EmailService;
 import ec.edu.ups.ppw.GestorProyectos.services.ProgramadorClient;
+import ec.edu.ups.ppw.GestorProyectos.services.TelegramClient;
 
 @Service
 public class GestionAsesorias {
@@ -22,6 +23,9 @@ public class GestionAsesorias {
 
     @Autowired
     private ProgramadorClient programadorClient;
+
+    @Autowired
+    private TelegramClient telegram;
 
     public List<Asesoria> getAsesorias() {
         return daoAsesoria.findAll();
@@ -43,6 +47,11 @@ public class GestionAsesorias {
 
         emailService.enviar(created.getEmailCliente(), asunto, cuerpo);
         emailService.enviar(emailProg, asunto, cuerpo);
+
+        telegram.send(
+            null,
+            "✅ Tu asesoría fue registrada.\nFecha: " + created.getFecha() + " Hora: " + created.getHora()
+        );
 
         return created;
     }
@@ -69,6 +78,12 @@ public class GestionAsesorias {
 
             emailService.enviar(updated.getEmailCliente(), asunto, cuerpo);
             emailService.enviar(emailProg, asunto, cuerpo);
+
+            telegram.send(
+                null,
+                "📌 Tu asesoría fue " + updated.getEstado()
+                + ". Fecha: " + updated.getFecha() + " Hora: " + updated.getHora()
+            );
 
             return updated;
         });

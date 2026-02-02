@@ -23,6 +23,9 @@ public class RecordatorioScheduler {
     @Autowired
     private ProgramadorClient programadorClient;
 
+    @Autowired
+    private TelegramClient telegram;
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Scheduled(fixedRate = 60000)
@@ -53,6 +56,11 @@ public class RecordatorioScheduler {
 
                     emailService.enviar(emailCliente, asunto, cuerpo);
                     emailService.enviar(emailProgramador, asunto, cuerpo);
+
+                    telegram.send(
+                        null,
+                        "⏰ Recordatorio: tu asesoría inicia en 1 minuto. Hora: " + a.getHora()
+                    );
                 }
 
             } catch (Exception ignored) {}
